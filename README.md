@@ -25,6 +25,12 @@
 - **语音播报**：系统离线 TTS、百度智能云（官方 API，自配 Key）等多引擎可选。
 - **液态玻璃 Dock**：正常模式为真实模糊折射的液态玻璃底部导航，低端机可在设置中开启省流模式。
 
+## 下载安装
+
+- 打开 [最新 Release](https://github.com/mjdds/FaceAttendance/releases/latest)，
+  下载附件 `FaceAttendance_v1.0.apk`（约 96 MB）。
+- 传到 Android 7.0（minSdk 24）及以上手机安装，首次安装需允许"安装未知来源应用"。
+- 首次启动授予相机权限即可使用，签到与识别全程离线，无需联网。
 
 ## 技术栈
 
