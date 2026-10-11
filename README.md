@@ -25,10 +25,6 @@
 - **语音播报**：系统离线 TTS、百度智能云（官方 API，自配 Key）等多引擎可选。
 - **液态玻璃 Dock**：正常模式为真实模糊折射的液态玻璃底部导航，低端机可在设置中开启省流模式。
 
-## 界面预览
-
-> 截图待补充：把手机截图放入 `docs/screenshots/`（建议命名 `camera.png`、
-> `records.png`、`library.png`），再在此处以 `![](docs/screenshots/xxx.png)` 引用即可。
 
 ## 技术栈
 
