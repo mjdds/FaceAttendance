@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![minSdk](https://img.shields.io/badge/minSdk-24-green.svg)]()
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.3-purple.svg)]()
+[![Co-created with CodeBuddy](https://img.shields.io/badge/Co--created%20with-CodeBuddy-5B4BDB.svg)](https://www.codebuddy.ai/)
 
 一款完全离线运行的 Android 刷脸考勤应用：端侧人脸检测与特征比对、多人同时独立签到、
 考勤记录多维筛选、已录入人脸库管理。人脸数据不出设备，无需服务器，开箱即用。
@@ -90,9 +91,13 @@
 - Android、Google Play、ML Kit、TensorFlow 是 Google LLC 或相关权利人的商标，
   Kotlin 是 JetBrains s.r.o. 的商标；文中提及仅用于说明技术来源与兼容性。
 
-## AI 辅助开发声明
+## 共创声明
 
-本项目代码主要由 AI 编程助手辅助生成，由项目维护者完成测试与审核。
+本项目由 **mjdds** 与 AI 编程助手 [CodeBuddy](https://www.codebuddy.ai/) 共创完成：
+
+- **CodeBuddy** 参与了代码编写、技术方案与项目文档的生成；
+- **mjdds** 负责产品设计、真机测试、审核修订与发布维护。
+
 如发现侵权或合规问题，欢迎提 Issue，维护者会及时处理。
 
 ## 贡献
