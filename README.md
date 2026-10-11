@@ -50,27 +50,10 @@
 
 ## 构建方法
 
-```bash
-# 1. 克隆仓库
-git clone https://github.com/mjdds/FaceAttendance.git
-cd FaceAttendance
-
-# 2. 直接构建（未配置签名时 release 自动使用 debug 签名）
-#    Windows PowerShell：
-$env:JAVA_HOME="你的JDK17路径"; .\gradlew.bat assembleRelease
-#    macOS / Linux：
-JAVA_HOME=/path/to/jdk17 ./gradlew assembleRelease
-```
-
-产物：`app/build/outputs/apk/release/app-release.apk`
-
-### 配置正式签名（可选，上架/覆盖安装历史版本才需要）
-
-```bash
-cp keystore.properties.example keystore.properties   # 然后填入你自己的签名信息
-```
-
-`keystore.properties` 与 `*.keystore` 已在 `.gitignore` 中，不会被提交。
+需要 JDK 17，源码构建执行 `./gradlew assembleRelease`（Windows 用 `gradlew.bat`），
+未配置签名时自动使用 debug 签名，产物在 `app/build/outputs/apk/release/`。
+正式签名的配置方法见 `keystore.properties.example` 中的注释
+（`keystore.properties` 与 `*.keystore` 已被 `.gitignore` 排除，不会提交）。
 
 ## 开源许可
 
