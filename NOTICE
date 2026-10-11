@@ -1,0 +1,89 @@
+智能刷脸考勤系统 (FaceAttendance)
+Copyright 2026 mjdds
+
+本产品依据 Apache License 2.0 授权发布，许可证全文见随附的 LICENSE 文件。
+
+================================================================================
+本产品包含/依赖以下第三方开源软件：
+================================================================================
+
+1. Android Jetpack（AndroidX Core、Lifecycle、Activity、Compose UI/Foundation/Material3、
+   material-icons-extended、CameraX）
+   许可：Apache License 2.0
+   主页：https://developer.android.com/jetpack
+
+2. Material Components for Android (com.google.android.material:material)
+   许可：Apache License 2.0
+   主页：https://github.com/material-components/material-components-android
+
+3. ML Kit Face Detection (com.google.mlkit:face-detection)
+   许可：Apache License 2.0
+   注意：人脸检测模型由 Google 通过 Google Play 服务动态下发，
+   其使用同时受 Google APIs Terms of Service 与 ML Kit 条款约束。
+   主页：https://developers.google.com/ml-kit
+
+4. TensorFlow Lite（tensorflow-lite / tensorflow-lite-gpu / tensorflow-lite-support）
+   许可：Apache License 2.0
+   版权所有：The TensorFlow Authors
+   主页：https://www.tensorflow.org/lite
+
+5. Kotlin Coroutines (org.jetbrains.kotlinx:kotlinx-coroutines-*)
+   许可：Apache License 2.0
+   版权所有：JetBrains s.r.o. and Kotlin Programming Language contributors
+   主页：https://github.com/Kotlin/kotlinx.coroutines
+
+6. OkHttp
+   许可：Apache License 2.0
+   版权所有：Square, Inc.
+   主页：https://github.com/square/okhttp
+
+7. AndroidLiquidGlass
+   构件：io.github.kyant0:backdrop:1.0.6、io.github.kyant0:shapes:1.2.0
+   用途：液态玻璃风格实时模糊背景与 iOS 风格形状（Jetpack Compose）
+   许可：Apache License 2.0（Maven Central 构件 POM 与上游仓库均已核实）
+   主页：https://github.com/Kyant0/AndroidLiquidGlass
+
+各组件许可证全文可在上述项目仓库中查阅。
+
+================================================================================
+人脸模型声明（重要）
+================================================================================
+assets/facenet.tflite 为 FaceNet 结构的人脸特征提取模型（输入 160x160，输出 128 维向量）。
+FaceNet 概念出自 Schroff, Kalenichenko, Bochinski（Google, 2015）的论文
+"FaceNet: A Unified Embedding for Face Recognition and Clustering"。
+仓库中的 .tflite 权重文件来自第三方格式转换版本，其训练数据集（可能为 VGGFace2 等
+研究用途数据集）与权重再分发/商用授权状态无法由本项目确认。
+
+- 学习、研究、个人使用：可直接使用随附模型。
+- 商业用途：请自行替换为你拥有合法授权的同规格模型，将新文件命名为
+  facenet.tflite 放入 app/src/main/assets/ 即可，无需改动代码。
+
+================================================================================
+在线语音合成服务声明
+================================================================================
+本应用不内置任何语音音频资源，语音播报由以下引擎之一在运行时完成：
+
+- Android 系统 TTS：设备本地服务，不联网。
+- 百度智能云语音合成（官方开放平台接口）：需使用者自行申请 API Key / Secret Key，
+  受百度智能云服务协议约束，调用费用/额度由使用者与百度之间的协议决定。
+- 微软 Edge 在线语音、有道词典 dictvoice、百度翻译 gettts 网页接口：
+  这些并非面向第三方公开授权的官方 API，本项目中相关代码仅作为技术学习与研究演示，
+  不提供任何可用性保证，也不鼓励违反对应服务条款的使用行为；
+  如需在正式场合或商业场景中使用，请自行替换为获得官方授权的语音服务。
+  使用这些引擎时，待播报的文本（仅文本，不含任何人脸数据）会发送至对应服务。
+
+================================================================================
+商标声明
+================================================================================
+- 本产品的液态玻璃视觉效果基于 Apache License 2.0 开源项目 AndroidLiquidGlass
+  （https://github.com/Kyant0/AndroidLiquidGlass，版权归原作者所有）实现。
+- "Liquid Glass" 为 Apple Inc. 的商标/界面设计语言名称。本产品为独立第三方作品，
+  与 Apple Inc. 无任何关联，亦未获得其认可、批准或赞助。
+- Android、Google Play、ML Kit、TensorFlow 等名称为 Google LLC 或相关权利人的商标；
+  Kotlin 为 JetBrains s.r.o. 的商标。以上名称仅用于说明技术来源与兼容性。
+
+================================================================================
+AI 辅助开发声明
+================================================================================
+本项目的代码主要由 AI 编程助手辅助生成，由项目维护者负责测试、审核与发布。
+如你认为本项目包含侵犯你权益的内容，请通过 GitHub Issues 联系维护者处理。

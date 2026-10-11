@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue_primary">#FF0A84FF</color>
+    <color name="bg_dark">#FF0B0B0F</color>
+    <color name="surface_glass">#33FFFFFF</color>
+</resources>

@@ -1,0 +1,27 @@
+# Gradle / 构建产物
+.gradle/
+build/
+app/build/
+captures/
+.cxx/
+local.properties
+
+# 签名密钥与签名配置（严禁提交！）
+release.keystore
+*.keystore
+*.jks
+keystore.properties
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 日志与临时文件
+*.log
+*.apk
+*.aab
