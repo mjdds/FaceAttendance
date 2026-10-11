@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.CloudUpload
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.GraphicEq
@@ -36,6 +37,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.outlined.PlayCircle
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -45,6 +47,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -86,6 +89,7 @@ fun SettingsScreen(
     var testing by remember { mutableStateOf(false) }
     var checking by remember { mutableStateOf(false) }
     var importing by remember { mutableStateOf(false) }
+    var showCredits by remember { mutableStateOf(false) }
 
     // 数据导出：创建 JSON 文件并写入全部人员/特征/记录
     val exportLauncher = rememberLauncherForActivityResult(
@@ -397,11 +401,23 @@ fun SettingsScreen(
                 Spacer(Modifier.height(8.dp))
                 AboutRow("语音引擎", "百度翻译·有道·百度云·Edge·系统")
                 Spacer(Modifier.height(8.dp))
-                AboutRow("最近更新", "全部人物筛选修复 · 语音引擎描述更新")
+                AboutRow("最近更新", "设置新增「开源致谢」")
             }
         }
 
         Spacer(Modifier.height(16.dp))
+
+        // ── 致谢入口 ──
+        SectionTitle("致谢")
+        SettingCard(
+            icon = Icons.Filled.Favorite,
+            title = "开源致谢",
+            subtitle = "第三方开源组件、商标与开发声明",
+            trailing = Icons.Filled.ChevronRight,
+            onClick = { showCredits = true }
+        )
+
+        Spacer(Modifier.height(28.dp))
 
         // ── 重播引导页 ──
         SectionTitle("引导与帮助")
@@ -414,6 +430,10 @@ fun SettingsScreen(
         )
 
         Spacer(Modifier.height(40.dp))
+    }
+
+    if (showCredits) {
+        CreditsDialog(onDismiss = { showCredits = false })
     }
 }
 
@@ -509,4 +529,65 @@ private fun AboutRow(label: String, value: String) {
         Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
     }
+}
+
+private data class CreditEntry(val name: String, val detail: String)
+
+@Composable
+private fun CreditsDialog(onDismiss: () -> Unit) {
+    val credits = listOf(
+        CreditEntry("Android Jetpack", "AndroidX、Compose、Lifecycle、CameraX · Apache-2.0"),
+        CreditEntry("Material Components for Android", "Google · Apache-2.0"),
+        CreditEntry("ML Kit Face Detection", "Google · Apache-2.0（检测模型经 Google Play 服务动态下发）"),
+        CreditEntry("TensorFlow Lite", "The TensorFlow Authors · Apache-2.0"),
+        CreditEntry("Kotlin Coroutines", "JetBrains · Apache-2.0"),
+        CreditEntry("OkHttp", "Square · Apache-2.0"),
+        CreditEntry("AndroidLiquidGlass", "Kyant0 · Apache-2.0（液态玻璃视觉效果）")
+    )
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("致谢") },
+        text = {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
+                Text(
+                    "本应用基于以下开源软件构建，谨向各项目作者致以谢意。",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(Modifier.height(14.dp))
+                credits.forEach { entry ->
+                    Text(
+                        entry.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.height(2.dp))
+                    Text(
+                        entry.detail,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(Modifier.height(10.dp))
+                }
+                Spacer(Modifier.height(2.dp))
+                CreditsNote("各组件许可证全文，以及人脸模型、在线语音服务的完整声明，见开源仓库中的 NOTICE 文件。")
+                Spacer(Modifier.height(8.dp))
+                CreditsNote("“Liquid Glass”为 Apple Inc. 的商标。本应用为独立第三方作品，与 Apple Inc. 无任何关联，亦未获其认可或赞助。")
+                Spacer(Modifier.height(8.dp))
+                CreditsNote("本应用由 AI 编程助手辅助开发，由维护者负责测试、审核与发布。")
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text("关闭") }
+        }
+    )
+}
+
+@Composable
+private fun CreditsNote(text: String) {
+    Text(
+        text,
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
 }
