@@ -120,8 +120,8 @@ fun StatsScreen(viewModel: AttendanceViewModel, onManageClasses: () -> Unit = {}
                     Box(Modifier.width(1.dp).height(40.dp).background(MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)))
                     StatBlock(
                         icon = Icons.Filled.BarChart,
-                        value = "${(summary.classStats.firstOrNull()?.avgRate?.times(100))?.toInt() ?: 0}%",
-                        label = "首班出勤率"
+                        value = "${(summary.classStats.firstOrNull()?.todayRate?.times(100))?.toInt() ?: 0}%",
+                        label = "首班当天"
                     )
                 }
             }
@@ -175,7 +175,7 @@ private fun StatBlock(icon: androidx.compose.ui.graphics.vector.ImageVector, val
 private fun ClassStatCard(cls: ClassStat) {
     var expanded by rememberSaveable(cls.className) { mutableStateOf(false) }
     val displayName = if (cls.className.isBlank()) "未分班" else cls.className
-    val ratePercent = (cls.avgRate * 100).toInt()
+    val ratePercent = (cls.todayRate * 100).toInt()
 
     Card(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
@@ -201,15 +201,15 @@ private fun ClassStatCard(cls: ClassStat) {
                     Text(displayName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                     Text("${cls.totalPersons} 人", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                // 出勤率
+                // 当天出勤率
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         "$ratePercent%",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = rateColor(cls.avgRate)
+                        color = rateColor(cls.todayRate)
                     )
-                    Text("出勤率", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("当天出勤率", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 IconButton(onClick = { expanded = !expanded }) {
                     Icon(
@@ -219,12 +219,12 @@ private fun ClassStatCard(cls: ClassStat) {
                 }
             }
 
-            // 班级出勤率进度条
+            // 班级当天出勤率进度条
             Spacer(Modifier.height(8.dp))
             LinearProgressIndicator(
-                progress = { cls.avgRate },
+                progress = { cls.todayRate },
                 modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
-                color = rateColor(cls.avgRate),
+                color = rateColor(cls.todayRate),
                 trackColor = MaterialTheme.colorScheme.surfaceVariant
             )
 

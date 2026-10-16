@@ -29,7 +29,7 @@
 ## 下载安装
 
 - 打开 [最新 Release](https://github.com/mjdds/FaceAttendance/releases/latest)，
-  下载附件 `FaceAttendance_v1.0.apk`（约 96 MB）。
+  下载页面中最新的 APK 附件（约 96 MB）。
 - 传到 Android 7.0（minSdk 24）及以上手机安装，首次安装需允许"安装未知来源应用"。
 - 首次启动授予相机权限即可使用，签到与识别全程离线，无需联网。
 

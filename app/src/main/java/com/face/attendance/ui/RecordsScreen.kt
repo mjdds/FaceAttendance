@@ -451,10 +451,17 @@ fun RecordsScreen(viewModel: AttendanceViewModel) {
             }
         }
 
-        // ── 单日签到状态摘要（仅单日模式） ──
+        // ── 单日未签到摘要（仅单日模式） ──
         if (dayMode == DayMode.SINGLE) {
             item {
                 val checkedNames = filtered.map { it.name }.distinct()
+                // 未签到统计范围跟随当前筛选：全部人员 / 指定班级 / 指定人物
+                val scopeNames = persons.filter { p ->
+                    (selectedClass == null || p.className == selectedClass) &&
+                        (selectedPersonId == null || p.id == selectedPersonId)
+                }.map { it.name }
+                val absentNames = scopeNames.filterNot { it in checkedNames }
+                val allChecked = scopeNames.isNotEmpty() && absentNames.isEmpty()
                 Row(
                     Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -462,22 +469,32 @@ fun RecordsScreen(viewModel: AttendanceViewModel) {
                     Box(
                         Modifier.size(28.dp).clip(CircleShape)
                             .background(
-                                if (checkedNames.isEmpty()) SolidColor(MaterialTheme.colorScheme.surfaceVariant)
-                                else Brush.horizontalGradient(SuccessGradient.map { it.copy(alpha = 0.2f) })
+                                when {
+                                    scopeNames.isEmpty() -> SolidColor(MaterialTheme.colorScheme.surfaceVariant)
+                                    absentNames.isEmpty() -> Brush.horizontalGradient(SuccessGradient.map { it.copy(alpha = 0.2f) })
+                                    else -> SolidColor(Warning.copy(alpha = 0.18f))
+                                }
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            "${checkedNames.size}",
+                            "${absentNames.size}",
                             style = MaterialTheme.typography.labelMedium,
-                            color = if (checkedNames.isEmpty()) MaterialTheme.colorScheme.onSurfaceVariant else Success,
+                            color = when {
+                                scopeNames.isEmpty() -> MaterialTheme.colorScheme.onSurfaceVariant
+                                absentNames.isEmpty() -> Success
+                                else -> Warning
+                            },
                             fontWeight = FontWeight.Bold
                         )
                     }
                     Spacer(Modifier.width(10.dp))
                     Text(
-                        if (checkedNames.isEmpty()) "当日暂无签到"
-                        else "当日已签到：${checkedNames.joinToString("、")}",
+                        when {
+                            scopeNames.isEmpty() -> "当日暂无可统计人员"
+                            allChecked -> "当日全员已签到"
+                            else -> "当日未签到：${absentNames.joinToString("、")}"
+                        },
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

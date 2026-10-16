@@ -25,8 +25,8 @@ android {
         applicationId = "com.face.attendance.v2"
         minSdk = 24
         targetSdk = 36
-        versionCode = 22
-        versionName = "1.0"
+        versionCode = 24
+        versionName = "1.1"
     }
 
     signingConfigs {

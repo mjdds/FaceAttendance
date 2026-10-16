@@ -376,7 +376,8 @@ class AttendanceViewModel(app: Application) : AndroidViewModel(app) {
      * 计算出勤率统计：
      * - totalDays: 有签到记录的不同日期数（即"上了几节课"）
      * - 每人出勤率 = 该人签到日期数 / totalDays
-     * - 班级出勤率 = 班内所有人签到日期数之和 / (班级人数 × totalDays)
+     * - 班级累计出勤率 = 班内所有人签到日期数之和 / (班级人数 × totalDays)
+     * - 班级当天出勤率 = 班内当天签到人数 / 班级人数
      */
     fun computeStats(): AttendanceSummary {
         val persons = _persons.value
@@ -386,6 +387,13 @@ class AttendanceViewModel(app: Application) : AndroidViewModel(app) {
         val dayFmt = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
         val allDays = records.map { dayFmt.format(java.util.Date(it.timestamp)) }.toSet()
         val totalDays = allDays.size
+
+        // 今天（设备日期）已签到人员集合，用于班级当天出勤率
+        val todayStr = dayFmt.format(java.util.Date(System.currentTimeMillis()))
+        val todayCheckedIds = records
+            .filter { dayFmt.format(java.util.Date(it.timestamp)) == todayStr }
+            .map { it.personId }
+            .toSet()
 
         // 每人签到日期集合
         val personDaysMap = mutableMapOf<Long, MutableSet<String>>()
@@ -411,10 +419,14 @@ class AttendanceViewModel(app: Application) : AndroidViewModel(app) {
                     members.sumOf { it.checkInDays.toDouble() }.toFloat() /
                         (members.size * totalDays)
                 else 0f
+                // 当天出勤率：班内今天已签到人数 / 班级人数
+                val todayChecked = members.count { it.personId in todayCheckedIds }
+                val todayRate = if (members.isNotEmpty()) todayChecked.toFloat() / members.size else 0f
                 ClassStat(
                     className = cls,
                     totalPersons = members.size,
                     avgRate = avg,
+                    todayRate = todayRate,
                     persons = members.sortedByDescending { it.rate }
                 )
             }
@@ -835,11 +847,12 @@ data class PersonStat(
     val rate: Float
 )
 
-/** 班级出勤率统计 */
+/** 班级出勤率统计：avgRate 为历史累计，todayRate 为当天（今日已签/班级人数） */
 data class ClassStat(
     val className: String,
     val totalPersons: Int,
     val avgRate: Float,
+    val todayRate: Float,
     val persons: List<PersonStat>
 )
 
